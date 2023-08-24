@@ -108,12 +108,11 @@ router.post('/agregarvisitante',( req , res ) => {
   })
 })
 router.post('/eliminarUsuario', (req,res) => {
-  const usuarioId = req.body.usuarioIdc
-
+  const usuario = req.body.usuario
   const token = req.headers['authorization']
   validationJWT(token)
   .then(doc => {
-    eliminarUsuario(usuarioId)
+    eliminarUsuario(usuario)
     .then(doc => {
       res.send({doc})
     })
@@ -166,6 +165,7 @@ router.get('/listaRecepcionista', (req,res) => {
   
 })
 router.post('/listaVisitante', (req,res) => {
+  
   const filtroUnico = req.body.filtroUnico
   obtenerVisitante(filtroUnico)
   .then((doc)=>{ 

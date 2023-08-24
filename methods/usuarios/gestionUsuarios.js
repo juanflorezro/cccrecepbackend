@@ -1,34 +1,16 @@
-  const {usuario,administrador,recepcionista,visitante} = require('./usuarioModelo')
+const {usuario,administrador,recepcionista,visitante} = require('./usuarioModelo')
+const {entradaSalida} = require('../entradas/entradaSalidaModelo')
 
-//acciones administrador
-
-
-
-//Estas son las funciones e <<<<<<<  agregar  >>>>>>>>
-
-//agregar Admin
 function agregarAdministrador(usuarioData, administradorData){
   return new Promise((resolve, reject) => {
     usuario(usuarioData).save()
     .then(doc => {
-      console.log(doc.usuario)
       administradorData.usuario = doc
       administrador(administradorData).save()
-      .then(docc => {
-        console.log(docc)
-      })
       resolve(doc)
-    })
-    .catch(err => {
-      console.error(err)
-      reject(err)
-    });
-  });
+    }).catch(err => reject(err))
+  })
 }
-
-
-
-//agregar Recepcionista
 function agregarRecepcionista(usuarioData, RecepcionistaData){
   return new Promise((resolve, reject) => {
     usuario(usuarioData).save()
@@ -36,126 +18,45 @@ function agregarRecepcionista(usuarioData, RecepcionistaData){
       console.log(doc.usuario)
       RecepcionistaData.usuario = doc  
       recepcionista(RecepcionistaData).save()
-      .then(docc => {
-        console.log(docc)
-      })
       resolve(doc)
-    })
-    .catch(err => {
-      console.error(err)
-      reject(err)
-    });
-  });
+    }).catch(err => reject(err))
+  })
 }
-
-
-
-//agrgar Visitante
 function agregarVisitante(usuarioData, visitanteData){
   return new Promise((resolve, reject) => {
     const usuarioNew = usuario(usuarioData)
     usuarioNew.save()
     .then(doc => {
-      console.log(doc.usuario)
       visitanteData.usuario = doc
       visitante(visitanteData).save()
-      .then(docc => {
-        console.log(docc)
-      })
       resolve(doc)
-    })
-    .catch(err => {
-      console.error(err)
-      reject(err)
-    })
+    }).catch(err => reject(err))
   })
 }
-
-
-
-
-
-
-//Estas son las funciones de <<<<<<<<< obtener >>>>>>>>>
-
-
-
-
-//obtener administrador
 function obtenerAdministrador(adminstradorData){
   return new Promise((resolve, reject) => {
     if(adminstradorData){
-      administrador.find(adminstradorData).populate('usuario')
-      .then( doc => {
-        resolve(doc)
-      })
-      .catch(err => {
-        console.log.error(err)
-        reject(err)
-      })
+      administrador.find(adminstradorData).populate('usuario').then(doc => resolve(doc)).catch(err => reject(err))
     }else{
-      administrador.find().populate('usuario')
-      .then( doc => {
-        resolve(doc)
-      })
-      .catch(err => {
-        console.log.error(err)
-        reject(err)
-      }) 
+      administrador.find().populate('usuario').then( doc => resolve(doc)).catch(err => reject(err)) 
     }
   })
 }
-
-
-
-//obtener Recepcionista
 function obtenerRecepcionista(recepcionistaData){
   return new Promise((resolve, reject) => {
     if(recepcionistaData){
-      recepcionista.find(recepcionistaData).populate('usuario')
-      .then( doc => {
-      resolve(doc)
-      })
-      .catch(err => {
-        console.log(err)
-        reject(err)
-      }) 
+      recepcionista.find(recepcionistaData).populate('usuario').then(doc => resolve(doc)).catch(err => reject(err)) 
     }else{
-      recepcionista.find().populate('usuario')
-      .then( doc => {
-        resolve(doc)
-      })
-      .catch(err => {
-        console.log.error(err)
-        reject(err)
-      }) 
+      recepcionista.find().populate('usuario').then( doc => resolve(doc)).catch(err => reject(err)) 
     }
   })
 }
-
-
-
-//otenerVisitantes
 function obtenerVisitante(visitanteData){
   return new Promise((resolve, reject) => {
     if(visitanteData){
-      visitante.find(visitanteData).populate('usuario')
-      .then( doc => {
-        resolve(doc)
-      })
-      .catch(err => {
-        console.log(err)
-        reject(err)
-      }) 
+      visitante.find(visitanteData).populate('usuario').then( doc => resolve(doc)).catch(err => reject(err)) 
     }else{
-      visitante.find().populate('usuario')
-      .then( doc => {
-        resolve(doc)
-      })
-      .catch(err => {
-        console.log.error(err)
-        reject(err)
-      }) 
+      visitante.find().populate('usuario').then( doc => resolve(doc)).catch(err => reject(err)) 
     }
   })
 }
@@ -164,36 +65,11 @@ function obtenerVisitanteFiltro(usuarioId){
     console.log(usuarioId)
     usuario.find(usuarioId)
     .then(doc => {
-      console.log(doc)
-      if(doc){
-        visitante.find({usuario: doc}).populate('usuario')
-        .then( doc => {
-          console.log(doc)
-          resolve(doc)
-        })
-        .catch(err => {
-          console.log(err)
-          reject(err)
-        }) 
-      }
+      if(doc){ visitante.find({usuario: doc}).populate('usuario').then( doc => resolve(doc)).catch(err => reject(err)) }
     })
-    .catch(err => {
-      console.log(err)
-      reject(err)
-    })
-    
+    .catch(err => reject(err))  
   })
 }
-
-
-
-
-
-
-//Estas son las funciones de <<<<<<<<<< Editar >>>>>>>>>>>> 
-
-
-
 function editarusuario(usuarioId, datosUpdateUsuario, datosUpdateVisitante){
   option = {
     new: true,
@@ -327,40 +203,16 @@ function editarVisitante(visitanteData,visitanteUpdateData){
   
 }
 
-
-
-
-
-
-//Estas son las funciones de eliminar
-
-function eliminarUsuario(usuarioId){
+function eliminarUsuario(usuarioData){
   return new Promise((resolve,reject) => {
-    usuario.find(usuarioId)
-    .then(doc => {
-      visitante.findOneAndRemove({usuario: doc})
-      .then(doc => {
-        console.log('usuario eliminado', doc)
-        usuario.findOneAndRemove(usuarioId)
-        .then( doc => {
-            console.log('usuario eliminado', doc)
-            resolve(doc)
-         })
-        .catch( err => {
-          console.err(err + 'file /methods/gestionUsuario:400')
-          reject(err)
-        })
-      })
-      .catch(err => {
-        console.log(err)
-        reject(err)
+    entradaSalida.deleteMany({objeto: usuarioData})
+    .then(() => {
+      visitante.deleteMany({usuario: usuarioData.usuario})
+      .then((e)=>{
+        usuario.findOneAndRemove(usuarioData.usuario).then((e) => resolve(e))
       })
     })
-    .catch( err => {
-      console.log(err)
-       reject(err)
-    })
-    
+    .catch(err => console.log(err)) 
   })
 }
 

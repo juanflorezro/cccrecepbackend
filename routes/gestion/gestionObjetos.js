@@ -67,11 +67,11 @@ router.post('/editar', (req,res) => {
   })
 })
 router.post('/eliminar', (req,res) => {
-  const objetoId = req.body.objetoIdo
+  const objeto = req.body.objeto
   const token = req.headers['authorization']
   validationJWT(token)
   .then(doc => {
-    eliminar(objetoId)
+    eliminar(objeto)
     .then(doc => {
       res.send(doc)
     })

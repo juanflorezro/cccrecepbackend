@@ -6,9 +6,12 @@ const {
   agregarEntradaSalidaObjeto,
   obtenerEntradaSalida,
   obtenerEntradaSalidaObjeto,
+  editarPersona,
+  editarObjeto,
+  eliminarEntradaPersona,
+  eliminarEntradaObjeto,
   eliminar
 } = require('./../../methods/entradas/gestionEntradas')
-
 
 router.post('/agregarEntradaPersona',(req,res) => {
   const entradaObjetoData = req.body.objeto
@@ -17,13 +20,8 @@ router.post('/agregarEntradaPersona',(req,res) => {
   validationJWT(token)
   .then(doc => {
     agregarEntradaSalida(entradaObjetoData)
-    .then(doc => {
-      console.log(doc)
-      res.send(doc) 
-    })
-    .catch(err => {
-      console.log(err)
-    })
+    .then(doc => res.send(doc))
+    .catch(err => res.send(err))
   })
   .catch(err => {
     console.log(err)
@@ -36,34 +34,20 @@ router.post('/agregarEntradaObjeto',(req,res) => {
   console.log(entradaObjetoData)
   validationJWT(token)
   .then(doc => {
-    agregarEntradaSalidaObjeto(entradaObjetoData)
-    .then(doc => {
-      console.log(doc)
-      res.send(doc) 
-    })
-    .catch(err => {
-      console.log(err)
-    })
+agregarEntradaSalidaObjeto(entradaObjetoData)
+    .then(doc => res.send(doc))
+    .catch(err => console.log(err))
   })
-  .catch(err => {
-    console.log(err)
-    res.status( 403 ).json({ msg: 'No autorizado' })
-  })
+  .catch(err => res.status( 403 ).json({ msg: 'No autorizado' }))
 })
 router.post('/obtenerEntradaSalidaPersona',(req,res) => {
-  
+  const ubicacion = req.body.ubicacion
   const token = req.headers['authorization']
   validationJWT(token)
-  .then(doc => {
-    obtenerEntradaSalida('')
-    .then(doc => {
-      console.log(doc)
-      
-      res.send(doc)
-    })
-    .catch(err => {
-      console.log(err)
-    })
+  .then(() => {
+    obtenerEntradaSalida({ubicacion: ubicacion})
+    .then(doc => res.send(doc))
+    .catch(err => console.log(err))
   })
   .catch(err => {
     console.log(err)
@@ -71,35 +55,22 @@ router.post('/obtenerEntradaSalidaPersona',(req,res) => {
   })
 })
 router.post('/obtenerEntradaSalidaObjeto',(req,res) => {
+  const ubicacion = req.body.ubicacion
   const token = req.headers['authorization']
   validationJWT(token)
   .then(doc => {
-    obtenerEntradaSalidaObjeto('')
-    .then(doc => {
-      console.log(doc)
-      
-      res.send(doc)
-    })
-    .catch(err => {
-      console.log(err)
-    })
+    obtenerEntradaSalidaObjeto({ubicacion: ubicacion})
+    .then(doc => res.send(doc))
+    .catch(err => console.log(err))
   })
-  .catch(err => {
-    console.log(err)
-    res.status( 403 ).json({ msg: 'No autorizado' })
-  })
+  .catch(() => res.status( 403 ).json({ msg: 'No autorizado' }) )
 })
 router.get('/eliminar', (req,res) => {
-  eliminar()
-  .then(doc => {
-    
-    res.send({doc})
-    
-  })
+  eliminar().then(doc => res.send({doc}))
 })
 router.post('/obtenerEntradaSalidaPersonaUnica',(req,res) => {
-  const {fecha, usuarioId} = req.body
-  obtenerEntradaSalida('')
+  const {fecha, usuarioId,ubicacion} = req.body
+  obtenerEntradaSalida({ubicacion: ubicacion})
     .then(doc => {
       console.log(doc)
       let contenedor = []
@@ -176,9 +147,8 @@ router.post('/obtenerEntradaSalidaPersonaUnica',(req,res) => {
     })
 })
 router.post('/obtenerEntradaSalidaObjetoUnico',(req,res) => {
-  const fecha = req.body.fecha
-  const objetoId = req.body.objetoId
-  obtenerEntradaSalidaObjeto('')
+  const {fecha, objetoId,ubicacion} = req.body
+  obtenerEntradaSalidaObjeto({ubicacion: ubicacion})
     .then(doc => {
       console.log(doc)
       let contenedor = []
@@ -254,4 +224,58 @@ router.post('/obtenerEntradaSalidaObjetoUnico',(req,res) => {
       console.log(err)
     })
 })
+router.post('/editarEntradaSalidaPersona', (req,res) => {
+  const personaEditar = req.body.personaEditar
+  const token = req.headers['authorization']
+  validationJWT(token)
+  .then(() => {
+    editarPersona(personaEditar)
+    .then(doc => res.send(doc))
+    .catch(err => res.send(err))
+  })
+  .catch(err => {
+    console.log(err)
+    res.status( 403 ).json({ msg: 'No autorizado' })
+  })
+})
+router.post('/editarEntradaSalidaObjeto', (req,res) => {
+  const objetoEditar = req.body.objetoEditar
+  const token = req.headers['authorization']
+  validationJWT(token)
+  .then(() => {
+    editarObjeto(objetoEditar)
+    .then(doc => res.send(doc))
+    .catch(err => res.send(err))
+  })
+  .catch(() => {res.status( 403 ).json({ msg: 'No autorizado' }) })
+})
+router.post('/eliminarEntradaSalida', (req,res) => {
+  const EntradaEliminar = req.body.EntradaEliminar
+  const token = req.headers['authorization']
+  validationJWT(token)
+  .then(() => {
+    eliminarEntradaPersona(EntradaEliminar)
+    .then(doc => res.send(doc))
+    .catch(err => res.send(err))
+  })
+  .catch(err => {
+    console.log(err)
+    res.status( 403 ).json({ msg: 'No autorizado' })
+  })
+})
+router.post('/eliminarEntradaSalidaObjeto', (req,res) => {
+  const EntradaEliminar = req.body.EntradaEliminar
+  const token = req.headers['authorization']
+  validationJWT(token)
+  .then(() => {
+    eliminarEntradaObjeto(EntradaEliminar)
+    .then(doc => res.send(doc))
+    .catch(err => res.send(err))
+  })
+  .catch(err => {
+    console.log(err)
+    res.status( 403 ).json({ msg: 'No autorizado' })
+  })
+})
+
 module.exports = router
