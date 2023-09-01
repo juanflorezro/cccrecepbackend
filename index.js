@@ -4,6 +4,9 @@ const cors = require('cors')
 const corsOptions = {
   origin: 'https://cccrecep.juanflow04flore.repl.co', // Permite acceso solo desde este dominio
   methods: 'GET,HEAD,PUT,PATCH,POST,DELETE', // Métodos HTTP permitidos
+  Access-Control-Allow-Origin: '*',
+  Access-Control-Allow-Methods: '*',
+  Access-Control-Allow-Headers: 'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token'
 }
 const bodyParser = require('body-parser')
 const loginUsuarioRouter = require('./routes/login/login')
