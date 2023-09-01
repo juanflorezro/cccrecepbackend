@@ -1,6 +1,12 @@
 const express = require('express')
 const app = express()
 const cors = require('cors')
+const corsOptions = {
+  origin: 'https://cccrecep.juanflow04flore.repl.co', // Permite acceso solo desde este dominio
+  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE', // Métodos HTTP permitidos
+  credentials: true, // Habilita el envío de cookies y encabezados de autenticación
+  optionsSuccessStatus: 204 // Establece el código de respuesta para las solicitudes OPTIONS
+}
 const bodyParser = require('body-parser')
 const loginUsuarioRouter = require('./routes/login/login')
 const {main,storageSize} = require('./connection/connection')
@@ -9,7 +15,7 @@ const gestionEntradasRouter = require('./routes/gestion/gestionEntradas')
 const gestionObjetosRouter = require('./routes/gestion/gestionObjetos')
 main().then(()=> storageSize().then(doc => console.log(doc)))
 
-app.use(cors({origin: '*'}))
+app.use(cors(corsOptions))
 app.use(bodyParser())
 app.use("/",loginUsuarioRouter)
 app.use('/usuarios', gestionUsuariosRouter)
