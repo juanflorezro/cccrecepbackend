@@ -5,7 +5,8 @@ const corsOptions = {
   origin: 'https://cccrecep.juanflow04flore.repl.co', // Permite acceso solo desde este dominio
   methods: 'GET,HEAD,PUT,PATCH,POST,DELETE', // Métodos HTTP permitidos
   credentials: true, // Habilita el envío de cookies y encabezados de autenticación
-  optionsSuccessStatus: 204 // Establece el código de respuesta para las solicitudes OPTIONS
+  optionsSuccessStatus: 204, // Establece el código de respuesta para las solicitudes OPTIONS
+  allowedHeaders: ['Content-Type', 'Authorization']
 }
 const bodyParser = require('body-parser')
 const loginUsuarioRouter = require('./routes/login/login')
