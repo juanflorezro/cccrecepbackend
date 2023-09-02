@@ -2,8 +2,7 @@ const express = require('express')
 const app = express()
 const cors = require('cors')
 const corsOptions = {
-  origin: 'https://cccrecep.juanflow04flore.repl.com', // Permite acceso solo desde este dominio
-  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE' // Métodos HTTP permitidos
+  origin: ['https://cccrecep.juanflow04flore.repl.co','*']
 }
 const bodyParser = require('body-parser')
 const loginUsuarioRouter = require('./routes/login/login')
