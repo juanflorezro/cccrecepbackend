@@ -39,6 +39,7 @@ router.get('/agregarAdministrador',( req , res ) => {
     res.status( 403 ).json({ msg: 'No autorizado' })
   })
 })
+
 router.get('/agregarRecepcionista',( req , res ) => {
   const usuarioData = {
     nombre: 'Juan David',
@@ -72,6 +73,9 @@ router.get('/agregarRecepcionista',( req , res ) => {
     })
     res.status( 403 ).json({ msg: 'No autorizado' })
   })
+})
+router.get('/hola',(req,res)=>{
+  res.send('hola estas e el servidor')
 })
 router.post('/agregarvisitante',( req , res ) => {
   const usuario = req.body.personaData
