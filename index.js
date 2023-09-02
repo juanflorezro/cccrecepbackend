@@ -2,7 +2,7 @@ const express = require('express')
 const app = express()
 const cors = require('cors')
 const corsOptions = {
-  origin: ['https://cccrecep.juanflow04flore.repl.co','*']
+  origin: ['https://cccrecep.juanflow04flore.repl.co','https://cccrecep.juanflow04flore.repl.co/main/entradaPersona']
 }
 const bodyParser = require('body-parser')
 const loginUsuarioRouter = require('./routes/login/login')
