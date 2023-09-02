@@ -74,10 +74,10 @@ router.get('/agregarRecepcionista',( req , res ) => {
     res.status( 403 ).json({ msg: 'No autorizado' })
   })
 })
-router.get('/hola',(req,res)=>{
+router.get('/hola/n/lo/l',(req,res)=>{
   res.send('hola estas e el servidor')
 })
-router.post('/agregarvisitante',( req , res ) => {
+router.post('/agregarVisitante',( req , res ) => {
   const usuario = req.body.personaData
   const usuarioData = {
     nombre: usuario.nombre,
