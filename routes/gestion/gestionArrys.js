@@ -24,6 +24,7 @@ router.post('/agregarProyecto', (req,res) => {
   .catch((err) => res.status( 403 ).json({ msg: 'No autorizado', err }) )
 })
 router.post('/obtenerProyectos', (req,res) => {
+  console.log('hola estas entrando')
   const token = req.headers['authorization']
   validationJWT(token)
   .then(()=>{
